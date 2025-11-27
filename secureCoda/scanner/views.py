@@ -51,3 +51,11 @@ def remediate_delete_page(request, doc_id, page_id):
         return Response({"error": str(e)}, status=400)
 
     return Response({"message": "Page deleted successfully"}, status=200)
+
+
+
+def alerts_dashboard(request):
+    return render(request, "dashboard/alerts.html")
+
+def documents_dashboard(request):
+    return render(request, "dashboard/documents.html")

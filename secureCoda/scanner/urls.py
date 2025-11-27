@@ -4,11 +4,16 @@ from scanner.views import (
     DocumentListView,
     resolve_alert,
     remediate_delete_page,
+    alerts_dashboard,
+    documents_dashboard
 )
 
 urlpatterns = [
     path("alerts/", AlertListView.as_view(), name="alerts"),
     path("documents/", DocumentListView.as_view(), name="documents"),
+    path("dashboard/alerts/", alerts_dashboard, name="alerts-dashboard"),
+    path("dashboard/documents/", documents_dashboard, name="documents-dashboard"),
+
 
     # Remediation endpoints
     path("alerts/<int:pk>/resolve/", resolve_alert, name="resolve-alert"),
