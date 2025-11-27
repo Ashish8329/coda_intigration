@@ -35,3 +35,10 @@ class CodaClient:
         r = requests.get(url, headers=HEADERS, params={"format": "html"})
         r.raise_for_status()
         return r.text
+
+    def delete_page(self, doc_id: str, page_id: str):
+        """
+        Deletes a page inside a Coda document.
+        """
+        endpoint = f"/docs/{doc_id}/pages/{page_id}"
+        return self._request("DELETE", endpoint)
