@@ -99,8 +99,4 @@ UI pages:
 - Dockerfile & docker-compose.yml included for easy deployment.
 - Celery used for background processing & log tracking.
 
----
-
-## ⚠️ Current Status
-We are facing **some minor issues with the Docker setup**, so for now you are free to use the **Django development server**, which works perfectly.
-
+## Love to Hear any Suggestion and Improvements
