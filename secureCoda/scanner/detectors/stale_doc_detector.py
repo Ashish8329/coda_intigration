@@ -1,6 +1,8 @@
 import logging
 from datetime import timedelta
+
 from django.utils import timezone
+
 from scanner.models import Alert
 
 logger = logging.getLogger("scanner")
@@ -11,7 +13,7 @@ class StaleDocumentDetector:
     Flags documents that haven't been updated for X days.
     """
 
-    def __init__(self, threshold_days=90):
+    def __init__(self, threshold_days):
         self.threshold = timedelta(days=threshold_days)
 
     def run(self, documents):
@@ -28,7 +30,7 @@ class StaleDocumentDetector:
                 continue  # skip invalid docs
 
             if now - doc.updated_at > self.threshold:
-                Alert.objects.create(
+                Alert.objects.update_or_create(
                     document=doc,
                     rule="STALE_DOCUMENT",
                     severity="low",

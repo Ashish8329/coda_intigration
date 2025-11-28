@@ -1,8 +1,9 @@
-from celery import shared_task
-from scanner.services.scan_runner import ScanRunner
 import logging
 
+from celery import shared_task
 from celery.schedules import crontab
+
+from scanner.services.scan_runner import ScanRunner
 
 logger = logging.getLogger("scanner")
 
@@ -16,12 +17,3 @@ def run_full_scan():
     scan = ScanRunner()
     scan.run_scan()
     logger.info("Celery scan task completed")
-
-
-
-app.conf.beat_schedule = {
-    "run-coda-scan-every-hour": {
-        "task": "scanner.tasks.run_full_scan",
-        "schedule": crontab(minute=0, hour="*"),  # every hour
-    },
-}

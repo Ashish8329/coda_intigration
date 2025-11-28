@@ -1,5 +1,6 @@
 import logging
 import re
+
 from scanner.models import Alert
 
 logger = logging.getLogger("scanner")
@@ -24,6 +25,7 @@ class SensitiveDataDetector:
         """
         self.client = client
 
+
     def run_row_scan(self, documents):
         """
         Scan all tables and rows in each document for sensitive data.
@@ -42,7 +44,9 @@ class SensitiveDataDetector:
                 table_name = table_item.get("name", "Unnamed Table")
 
                 try:
-                    rows_data = self.client.list_rows(doc.doc_id, table_id).get("items", [])
+                    rows_data = self.client.list_rows(doc.doc_id, table_id).get(
+                        "items", []
+                    )
                 except Exception as e:
                     logger.warning(f"Failed to fetch rows for table {table_id}: {e}")
                     continue
@@ -54,14 +58,15 @@ class SensitiveDataDetector:
                             continue
                         for rule, pattern in self.SENSITIVE_PATTERNS.items():
                             if pattern.search(value):
-                                Alert.objects.create(
+                                Alert.objects.update_or_create(
                                     document=doc,
                                     rule=f"SENSITIVE_DATA_{rule}",
                                     severity="high",
                                     description=f"Sensitive data found in table '{table_name}', field '{field}'",
                                 )
-                                logger.info(f"Sensitive alert: {doc.name} - {table_name} - {field}")
-
+                                logger.info(
+                                    f"Sensitive alert: {doc.name} - {table_name} - {field}"
+                                )
 
     def run_page_scan(self, documents):
         """
@@ -81,20 +86,24 @@ class SensitiveDataDetector:
 
                     try:
                         html_content = self.client.export_page_html(doc.doc_id, page_id)
-                        text_content = html.unescape(re.sub(r"<[^>]+>", "", html_content))
+                        text_content = html.unescape(
+                            re.sub(r"<[^>]+>", "", html_content)
+                        )
                     except Exception as e:
                         logger.warning(f"Failed to export page {page_id}: {e}")
                         continue
 
                     for rule, pattern in self.SENSITIVE_PATTERNS.items():
                         if pattern.search(text_content):
-                            Alert.objects.create(
+                            Alert.objects.update_or_create(
                                 document=doc,
                                 rule=f"SENSITIVE_PAGE_{rule}",
                                 severity="high",
                                 description=f"Sensitive data found on page '{page_name}'",
                             )
-                            logger.info(f"Sensitive page alert: {doc.name} - {page_name}")
+                            logger.info(
+                                f"Sensitive page alert: {doc.name} - {page_name}"
+                            )
 
             except Exception as e:
                 logger.warning(f"Page scan failed for doc {doc.doc_id}: {e}")

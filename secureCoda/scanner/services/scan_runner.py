@@ -1,8 +1,10 @@
 import logging
-from scanner.services.document_sync import DocumentSyncService
-from scanner.detectors.stale_doc_detector import StaleDocumentDetector
+
+from base.constants import THRESHOLD_DAYS
 from scanner.detectors.public_doc_detector import PublicDocumentDetector
 from scanner.detectors.sensitive_data_detector import SensitiveDataDetector
+from scanner.detectors.stale_doc_detector import StaleDocumentDetector
+from scanner.services.document_sync import DocumentSyncService
 
 logger = logging.getLogger("scanner")
 
@@ -22,7 +24,7 @@ class ScanRunner:
         """
         self.doc_service = DocumentSyncService()
         self.detectors = [
-            StaleDocumentDetector(threshold_days=90),
+            StaleDocumentDetector(threshold_days=THRESHOLD_DAYS),
             PublicDocumentDetector(),
         ]
         self.sensitive_detector = SensitiveDataDetector(client=self.doc_service.client)
@@ -47,7 +49,9 @@ class ScanRunner:
             try:
                 detector.run(docs)
             except Exception as e:
-                logger.error(f"Error running detector {detector.__class__.__name__}: {e}")
+                logger.error(
+                    f"Error running detector {detector.__class__.__name__}: {e}"
+                )
 
         # Step 3: Run sensitive data detectors
         try:
