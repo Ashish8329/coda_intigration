@@ -34,7 +34,7 @@ class SensitiveDataDetector:
 
         for doc in documents:
             try:
-                tables_data = self.client.list_tables(doc.doc_id).get("items", [])
+                tables_data = self.client.list_tables(doc.doc_id)
             except Exception as e:
                 logger.warning(f"Failed to fetch tables for doc {doc.doc_id}: {e}")
                 continue
@@ -44,9 +44,7 @@ class SensitiveDataDetector:
                 table_name = table_item.get("name", "Unnamed Table")
 
                 try:
-                    rows_data = self.client.list_rows(doc.doc_id, table_id).get(
-                        "items", []
-                    )
+                    rows_data = self.client.list_rows(doc.doc_id, table_id)
                 except Exception as e:
                     logger.warning(f"Failed to fetch rows for table {table_id}: {e}")
                     continue
