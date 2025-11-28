@@ -28,7 +28,7 @@ class Alert(models.Model):
         ("medium", "Medium"),
         ("high", "High"),
     )
-    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    document = models.OneToOneField(Document, on_delete=models.CASCADE)
     rule = models.CharField(max_length=255)
     severity = models.CharField(max_length=20, choices=SEVERITY)
     description = models.TextField()
