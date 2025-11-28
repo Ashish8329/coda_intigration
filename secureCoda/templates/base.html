@@ -13,8 +13,9 @@
         <div class="container mx-auto flex justify-between">
             <a href="/dashboard/alerts/" class="font-bold text-xl">SecureCoda</a>
             <div class="space-x-4">
-                <a href="/dashboard/alerts/" class="hover:text-blue-600">Alerts</a>
-                <a href="/dashboard/documents/" class="hover:text-blue-600">Documents</a>
+                <a href="{% url 'alert_list' %}">Alerts</a>
+                <a href="{% url 'document_list' %}">Documents</a>
+
             </div>
         </div>
     </nav>
