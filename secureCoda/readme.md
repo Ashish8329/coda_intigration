@@ -94,6 +94,11 @@ UI pages:
 
 ---
 
+## tip:
+use this command if u want to run the syncronization at place(to get data from coda to this system)
+
+python manage.py run_scan
+
 ## 📝 Additional Notes
 - We added a simple Django-based UI using Tailwind CSS.
 - Dockerfile & docker-compose.yml included for easy deployment.
