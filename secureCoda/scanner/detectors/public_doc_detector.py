@@ -1,4 +1,5 @@
 import logging
+
 from scanner.models import Alert
 
 logger = logging.getLogger("scanner")
@@ -17,7 +18,7 @@ class PublicDocumentDetector:
 
         for doc in documents:
             if doc.is_published:
-                Alert.objects.create(
+                Alert.objects.update_or_create(
                     document=doc,
                     rule="PUBLIC_DOCUMENT",
                     severity="high",

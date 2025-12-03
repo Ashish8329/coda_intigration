@@ -29,8 +29,6 @@ secureCoda/
 ├── manage.py
 └── requirements.txt
 
-yaml
-Copy code
 
 ---
 
@@ -40,38 +38,28 @@ Copy code
 python3 -m venv venv
 source venv/bin/activate
 
-shell
-Copy code
 
 ### 2. Install dependencies
 pip install -r requirements.txt
 
-shell
-Copy code
+### 2.1 Naviagate to Root Directory
+cd secureCode
+
+#### 2.2 Run migrate command
+python manage.py migrate
 
 ### 3. Run Django
 python manage.py runserver
 
-yaml
-Copy code
+### visit UI
+visit -> http://127.0.0.1:8000/api/dashboard/alerts/ for alerts and documents
 
 ---
 
 ## 🐳 Docker Setup
 
-### 1. Create `.env` in root
-DEBUG=True
-SECRET_KEY=your-secret-key
-CODA_API_KEY=your-api-key
-
-shell
-Copy code
-
-### 2. Build & Run
+### 1. Build & Run
 docker-compose up --build
-
-yaml
-Copy code
 
 This runs:
 - Django App  
@@ -86,9 +74,6 @@ This runs:
 celery -A secureCoda worker -l info
 celery -A secureCoda beat -l info
 
-yaml
-Copy code
-
 Celery handles:
 - Log syncing  
 - Scheduled scanning  
@@ -101,23 +86,22 @@ After running the server, open:
 
 http://localhost:8000
 
-yaml
-Copy code
 
 UI pages:
-- `/documents` – Synced Coda Documents  
-- `/alerts` – Detected anomalies  
+- `api/dashboard/documents` – Synced Coda Documents  
+- `api/dashboard/alerts` – Detected anomalies  
 - `/scan` – Manual scan trigger  
 
 ---
+
+## tip:
+use this command if u want to run the syncronization at place(to get data from coda to this system)
+
+python manage.py run_scan
 
 ## 📝 Additional Notes
 - We added a simple Django-based UI using Tailwind CSS.
 - Dockerfile & docker-compose.yml included for easy deployment.
 - Celery used for background processing & log tracking.
 
----
-
-## ⚠️ Current Status
-We are facing **some minor issues with the Docker setup**, so for now you are free to use the **Django development server**, which works perfectly.
-
+## Love to Hear any Suggestion and Improvements

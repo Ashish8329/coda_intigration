@@ -11,8 +11,8 @@ from scanner.views import (
 urlpatterns = [
     path("alerts/", AlertListView.as_view(), name="alerts"),
     path("documents/", DocumentListView.as_view(), name="documents"),
-    path("dashboard/alerts/", alerts_dashboard, name="alerts-dashboard"),
-    path("dashboard/documents/", documents_dashboard, name="documents-dashboard"),
+    path("dashboard/alerts/", alerts_dashboard, name="alert_list"),
+    path("dashboard/documents/", documents_dashboard, name="document_list"),
 
 
     # Remediation endpoints

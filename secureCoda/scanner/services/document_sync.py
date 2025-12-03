@@ -28,7 +28,7 @@ class DocumentSyncService:
             logger.error(f"Failed to fetch documents from Coda: {e}")
             return []
 
-        docs = data.get("items", [])
+        docs = data
         synced_docs = []
 
         for item in docs:

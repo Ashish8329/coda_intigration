@@ -12,23 +12,29 @@ class CodaClient:
     """
     coda client for handling simple api and getting data with the apis
     """
+    def _paginate(self, url):
+        while url:
+            response = requests.get(url, headers=HEADERS)
+            response.raise_for_status()
+            data = response.json()
+
+            for item in data.get('items', []):
+                yield item 
+            
+            url = data.get('nextPageLink', None)
+
     def list_docs(self):
         url = f"{CODA_BASE_URL}/docs"
-        r = requests.get(url, headers=HEADERS)
-        r.raise_for_status()
-        return r.json()
+        return list(self._paginate(url))
 
     def list_tables(self, doc_id):
         url = f"{CODA_BASE_URL}/docs/{doc_id}/tables"
-        r = requests.get(url, headers=HEADERS)
-        r.raise_for_status()
-        return r.json()
+        return list(self._paginate(url))
 
     def list_rows(self, doc_id, table_id):
         url = f"{CODA_BASE_URL}/docs/{doc_id}/tables/{table_id}/rows"
-        r = requests.get(url, headers=HEADERS)
-        r.raise_for_status()
-        return r.json()
+        return list(self._paginate(url))       
+
 
     def export_page_html(self, doc_id, page_id):
         url = f"{CODA_BASE_URL}/docs/{doc_id}/pages/{page_id}/export"
